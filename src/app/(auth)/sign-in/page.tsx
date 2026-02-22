@@ -29,7 +29,15 @@ export default function SignInPage() {
   const handleGithubSignIn = async () => {
     setError("");
     setLoading(true);
-    await signIn.social({ provider: "github", callbackURL: "/repos" });
+    try {
+      await signIn.social({
+        provider: "github",
+        callbackURL: "/repos",
+      });
+    } catch (err) {
+      setError("Failed to sign in with GitHub");
+      setLoading(false);
+    }
   };
 
   return (
