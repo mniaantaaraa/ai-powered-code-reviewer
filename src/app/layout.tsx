@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Qivo — Code review at the speed of thought",
+  title: "Qivo",
   description:
     "Qivo integrates with GitHub to deliver instant AI-powered code reviews — catching bugs, security vulnerabilities, and performance issues before they ship.",
   keywords: ["AI code review", "GitHub", "automated review", "security", "code quality"],
