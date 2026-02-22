@@ -39,7 +39,7 @@ const features = [
 
 export default function FeaturesSection() {
     return (
-        <section id="features" className="relative px-6 py-32">
+        <section id="features" className="relative px-6 py-32 pb-64">
             <div className="mx-auto max-w-5xl">
 
                 {/* Header */}

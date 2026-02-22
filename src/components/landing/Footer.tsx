@@ -5,7 +5,7 @@ export default function Footer() {
         <footer className="px-6 py-8">
             <div className="flex items-center justify-between">
                 <p className="text-xs text-white/15">© 2026 Qivo. All rights reserved.</p>
-                <p className="text-xs text-white/20">
+                <p className="text-xs text-white/20 absolute left-1/2 -translate-x-1/2">
                     Made with <span className="text-red-400">🩷</span> by Antara Chanda
                 </p>
                 <a
