@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -38,6 +39,16 @@ export function Header({ user }: HeaderProps) {
     <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-xl supports-backdrop-filter:bg-background/60">
       <div className="container mx-auto flex h-14 items-center justify-between px-4">
         <div className="flex items-center gap-8">
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/logo-qivo.png"
+              alt="Qivo"
+              width={80}
+              height={28}
+              className="object-contain"
+              priority
+            />
+          </Link>
           <nav className="hidden md:flex items-center gap-1">
             {navItems.map((item) => {
               const isActive =

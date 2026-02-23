@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -42,8 +43,15 @@ export function Sidebar() {
   return (
     <aside className="w-64 border-r border-white/8 flex flex-col bg-black">
       <div className="p-6">
-        <Link href="/" className="text-lg font-medium text-white">
-          qivo
+        <Link href="/" className="flex items-center">
+          <Image
+            src="/logo-qivo.png"
+            alt="Qivo"
+            width={80}
+            height={28}
+            className="object-contain"
+            priority
+          />
         </Link>
       </div>
 

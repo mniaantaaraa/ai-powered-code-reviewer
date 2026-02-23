@@ -2,17 +2,15 @@
 
 export default function Footer() {
     return (
-        <footer className="px-6 py-8">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                <p className="text-xs text-white/15">© 2026 Qivo. All rights reserved.</p>
-                <p className="text-xs text-white/20">
-                    Made with <span className="text-red-400">🩷</span> by Antara Chanda
-                </p>
+        <footer className="border-t border-white/[0.07] py-8 px-6">
+            <div className="grid grid-cols-3 items-center text-sm text-white/30 w-full">
+                <span className="justify-self-start">© 2026 Qivo. All rights reserved.</span>
+                <span className="justify-self-center">Made with ❤️ by Antara Chanda</span>
                 <a
                     href="https://github.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs text-white/30 transition-colors hover:text-white/60"
+                    className="justify-self-end hover:text-white/70 transition-colors"
                 >
                     GitHub
                 </a>

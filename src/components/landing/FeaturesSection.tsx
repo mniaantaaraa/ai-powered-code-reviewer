@@ -1,39 +1,42 @@
 "use client";
-import { motion } from "framer-motion";
-import { Bug, ShieldCheck, Sparkles, MessageSquare } from "lucide-react";
+import { Bug, Shield, Sparkles, MessageCircle } from "lucide-react";
 
 const features = [
     {
-        icon: Bug,
-        iconBg: "bg-blue-500/10",
-        iconColor: "text-blue-400",
+        Icon: Bug,
         title: "Automated Bug Detection",
         description:
             "Identifies logic errors, unsafe patterns, and edge cases before code is merged.",
+        color: "text-glow-blue",
+        hoverShadow:
+            "hover:shadow-[0_0_30px_rgba(96,165,250,0.15)]",
     },
     {
-        icon: ShieldCheck,
-        iconBg: "bg-red-500/10",
-        iconColor: "text-red-400",
+        Icon: Shield,
         title: "Security Analysis",
         description:
             "Scans pull requests for vulnerabilities, insecure dependencies, and common attack vectors.",
+        color: "text-glow-red",
+        hoverShadow:
+            "hover:shadow-[0_0_30px_rgba(248,113,113,0.15)]",
     },
     {
-        icon: Sparkles,
-        iconBg: "bg-purple-500/10",
-        iconColor: "text-purple-400",
+        Icon: Sparkles,
         title: "Code Quality Insights",
         description:
             "Evaluates structure, maintainability, and best practices with clear, actionable feedback.",
+        color: "text-glow-purple",
+        hoverShadow:
+            "hover:shadow-[0_0_30px_rgba(167,139,250,0.15)]",
     },
     {
-        icon: MessageSquare,
-        iconBg: "bg-emerald-500/10",
-        iconColor: "text-emerald-400",
+        Icon: MessageCircle,
         title: "Inline PR Comments",
         description:
             "Every finding is posted directly to your pull request with line-level context and a suggested fix.",
+        color: "text-glow-emerald",
+        hoverShadow:
+            "hover:shadow-[0_0_30px_rgba(52,211,153,0.15)]",
     },
 ];
 
@@ -41,65 +44,33 @@ export default function FeaturesSection() {
     return (
         <section id="features" className="relative px-6 py-32 pb-64">
             <div className="mx-auto max-w-5xl">
-
                 {/* Header */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
-                    className="mb-16 text-center"
-                >
-                    <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/40">
-                        Features
-                    </div>
-                    <h2
-                        className="pb-2 text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl"
-                        style={{
-                            background: "linear-gradient(135deg, #ffffff 0%, #888888 100%)",
-                            WebkitBackgroundClip: "text",
-                            WebkitTextFillColor: "transparent",
-                            backgroundClip: "text",
-                        }}
-                    >
-                        Everything you need for reliable pull request reviews.
+                <div className="flex flex-col items-center text-center mb-16">
+                    <span className="pill-badge mb-4">Features</span>
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mt-2">
+                        <span className="gradient-text-bright">
+                            Everything you need for reliable{" "}
+                            <br className="hidden sm:block" />
+                            pull request reviews.
+                        </span>
                     </h2>
-                </motion.div>
-
-                {/* 4-column icon grid */}
-                <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4">
-                    {features.map((feature, i) => {
-                        const Icon = feature.icon;
-                        return (
-                            <motion.div
-                                key={feature.title}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, margin: "-40px" }}
-                                transition={{ duration: 0.5, delay: i * 0.1 }}
-                                className="flex flex-col gap-4"
-                            >
-                                {/* Icon */}
-                                <div
-                                    className={`flex h-10 w-10 items-center justify-center rounded-xl ${feature.iconBg}`}
-                                >
-                                    <Icon className={`h-5 w-5 ${feature.iconColor}`} />
-                                </div>
-
-                                {/* Text */}
-                                <div className="space-y-2">
-                                    <h3 className="text-base font-semibold text-white">
-                                        {feature.title}
-                                    </h3>
-                                    <p className="text-sm leading-relaxed text-white/50">
-                                        {feature.description}
-                                    </p>
-                                </div>
-                            </motion.div>
-                        );
-                    })}
                 </div>
 
+                {/* Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {features.map(({ Icon, title, description, color, hoverShadow }) => (
+                        <div
+                            key={title}
+                            className={`glass-card rounded-2xl p-6 flex flex-col transition-shadow ${hoverShadow}`}
+                        >
+                            <Icon className={`w-8 h-8 ${color} mb-4`} />
+                            <h3 className="text-white font-semibold mb-2">{title}</h3>
+                            <p className="text-white/50 text-sm leading-relaxed">
+                                {description}
+                            </p>
+                        </div>
+                    ))}
+                </div>
             </div>
         </section>
     );
