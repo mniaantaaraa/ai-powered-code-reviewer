@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { ApplyFixDialog } from "@/components/apply-fix-dialog";
 import {
   Bug,
   Shield,
@@ -37,16 +38,21 @@ interface ReviewComment {
 interface ReviewResultProps {
   review: {
     id: string;
+    repositoryId?: string;
     status: string;
     summary: string | null;
     riskScore: number | null;
     comments: ReviewComment[] | unknown;
     error: string | null;
     createdAt: Date;
+    repository?: {
+      id: string;
+    };
   };
+  prNumber?: number;
 }
 
-export function ReviewResult({ review }: ReviewResultProps) {
+export function ReviewResult({ review, prNumber }: ReviewResultProps) {
   if (review.status === "PENDING") {
     return (
       <Card>
@@ -259,7 +265,13 @@ export function ReviewResult({ review }: ReviewResultProps) {
 
           <div className="space-y-2">
             {comments.map((comment, index) => (
-              <CommentCard key={index} comment={comment} index={index} />
+              <CommentCard
+                key={index}
+                comment={comment}
+                index={index}
+                repositoryId={review.repositoryId || review.repository?.id}
+                prNumber={prNumber}
+              />
             ))}
           </div>
         </div>
@@ -296,9 +308,13 @@ function NoIssuesCard() {
 function CommentCard({
   comment,
   index,
+  repositoryId,
+  prNumber,
 }: {
   comment: ReviewComment;
   index: number;
+  repositoryId?: string;
+  prNumber?: number;
 }) {
   const [expanded, setExpanded] = useState(index < 3);
   const [copied, setCopied] = useState(false);
@@ -314,6 +330,8 @@ function CommentCard({
   const pathParts = comment.file.split("/");
   const fileName = pathParts.pop();
   const directory = pathParts.join("/");
+
+  const canApplyFix = repositoryId && prNumber && comment.suggestion;
 
   return (
     <Card>
@@ -391,7 +409,7 @@ function CommentCard({
       </div>
 
       {expanded && comment.suggestion && (
-        <div className="px-4 pb-4">
+        <div className="px-4 pb-4 space-y-3">
           <div className="ml-4 rounded-lg bg-linear-to-br from-emerald-500/10 to-emerald-500/5 border border-emerald-500/20 p-4">
             <div className="flex items-center gap-2 mb-2">
               <div className="p-1 rounded-md bg-emerald-500/20">
@@ -403,6 +421,18 @@ function CommentCard({
             </div>
             <p className="text-sm leading-relaxed pl-7">{comment.suggestion}</p>
           </div>
+
+          {canApplyFix && (
+            <div className="ml-4 flex justify-end" onClick={(e) => e.stopPropagation()}>
+              <ApplyFixDialog
+                repositoryId={repositoryId}
+                prNumber={prNumber}
+                fileName={comment.file}
+                issue={comment.message}
+                suggestion={comment.suggestion}
+              />
+            </div>
+          )}
         </div>
       )}
     </Card>

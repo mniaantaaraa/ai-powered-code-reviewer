@@ -182,3 +182,64 @@
 .bg-glow-purple {
   background: #7c3aed;
 }
+
+
+/* Custom scrollbar styles - hidden but scrollable */
+.scrollbar-custom {
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.scrollbar-custom::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.scrollbar-custom::-webkit-scrollbar-track {
+  display: none;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  display: none;
+}
+
+
+/* Prevent text selection and dragging */
+.no-drag {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  pointer-events: none;
+  -webkit-touch-callout: none;
+}
+
+.no-drag * {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+  -webkit-touch-callout: none;
+}
+
+/* Prevent scroll container from being draggable */
+.scroll-container {
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.scroll-container * {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}

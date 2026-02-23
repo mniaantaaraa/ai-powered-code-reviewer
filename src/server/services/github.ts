@@ -1,4 +1,9 @@
 import { db } from "@/server/db";
+import { Octokit } from "@octokit/rest";
+
+function getOctokit(accessToken: string) {
+  return new Octokit({ auth: accessToken });
+}
 
 export interface GitHubPullRequestFile {
   sha: string;
@@ -192,4 +197,109 @@ export async function fetchPullRequestFiles(
   }
 
   return files;
+}
+
+
+interface CreateCommitInput {
+  owner: string;
+  repo: string;
+  branch: string;
+  filePath: string;
+  content: string;
+  message: string;
+  accessToken: string;
+}
+
+export async function createCommitWithFix(
+  input: CreateCommitInput,
+): Promise<{ commitSha: string; branchName: string }> {
+  const octokit = getOctokit(input.accessToken);
+
+  // Get the current branch reference
+  const { data: ref } = await octokit.rest.git.getRef({
+    owner: input.owner,
+    repo: input.repo,
+    ref: `heads/${input.branch}`,
+  });
+
+  const currentCommitSha = ref.object.sha;
+
+  // Get the current commit to get the tree
+  const { data: currentCommit } = await octokit.rest.git.getCommit({
+    owner: input.owner,
+    repo: input.repo,
+    commit_sha: currentCommitSha,
+  });
+
+  // Create a new blob with the fixed content
+  const { data: blob } = await octokit.rest.git.createBlob({
+    owner: input.owner,
+    repo: input.repo,
+    content: Buffer.from(input.content).toString("base64"),
+    encoding: "base64",
+  });
+
+  // Create a new tree with the updated file
+  const { data: newTree } = await octokit.rest.git.createTree({
+    owner: input.owner,
+    repo: input.repo,
+    base_tree: currentCommit.tree.sha,
+    tree: [
+      {
+        path: input.filePath,
+        mode: "100644",
+        type: "blob",
+        sha: blob.sha,
+      },
+    ],
+  });
+
+  // Create a new commit
+  const { data: newCommit } = await octokit.rest.git.createCommit({
+    owner: input.owner,
+    repo: input.repo,
+    message: input.message,
+    tree: newTree.sha,
+    parents: [currentCommitSha],
+  });
+
+  // Update the branch reference
+  await octokit.rest.git.updateRef({
+    owner: input.owner,
+    repo: input.repo,
+    ref: `heads/${input.branch}`,
+    sha: newCommit.sha,
+  });
+
+  return {
+    commitSha: newCommit.sha,
+    branchName: input.branch,
+  };
+}
+
+interface GetFileContentInput {
+  owner: string;
+  repo: string;
+  path: string;
+  ref: string;
+  accessToken: string;
+}
+
+export async function getFileContent(
+  input: GetFileContentInput,
+): Promise<string> {
+  const octokit = getOctokit(input.accessToken);
+
+  const { data } = await octokit.rest.repos.getContent({
+    owner: input.owner,
+    repo: input.repo,
+    path: input.path,
+    ref: input.ref,
+  });
+
+  if ("content" in data && data.content) {
+    return Buffer.from(data.content, "base64").toString("utf-8");
+  }
+
+  throw new Error("File content not found");
 }

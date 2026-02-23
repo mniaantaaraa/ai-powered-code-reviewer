@@ -10,6 +10,7 @@ import {
   LayoutDashboard,
   Settings,
   LogOut,
+  BarChart3,
 } from "lucide-react";
 import { signOut } from "@/lib/auth-client";
 
@@ -23,6 +24,11 @@ const navItems = [
     href: "/reviews",
     label: "Pull Requests",
     icon: GitPullRequest,
+  },
+  {
+    href: "/analytics",
+    label: "Analytics",
+    icon: BarChart3,
   },
 ];
 

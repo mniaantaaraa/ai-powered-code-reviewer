@@ -29,6 +29,7 @@ import {
 import { cn } from "@/lib/utils";
 import { DiffViewer } from "@/components/diff-viewer";
 import { ReviewResult } from "@/components/review-result";
+import { ReviewChat } from "@/components/review-chat";
 
 type PageProps = {
   params: Promise<{ id: string; prNumber: string }>;
@@ -304,9 +305,14 @@ export default function PullRequestDetailPage({ params }: PageProps) {
 
       {/* Tab Content */}
       {activeTab === "review" && (
-        <div>
+        <div className="space-y-6">
           {latestReview.data ? (
-            <ReviewResult review={latestReview.data} />
+            <>
+              <ReviewResult review={latestReview.data} prNumber={prNum} />
+              {latestReview.data.status === "COMPLETED" && (
+                <ReviewChat reviewId={latestReview.data.id} />
+              )}
+            </>
           ) : (
             <Card>
               <CardContent className="py-16 text-center">
