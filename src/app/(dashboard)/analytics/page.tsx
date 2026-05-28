@@ -17,7 +17,6 @@ import {
   Cpu,
   Clock,
   ArrowUpRight,
-  BarChart3,
   Flame,
   Bug,
   LineChart,
@@ -128,14 +127,15 @@ export default function AnalyticsPage() {
       const commentsArray = Array.isArray(review.comments)
         ? review.comments
         : [];
-      commentsArray.forEach((comment: any) => {
+      commentsArray.forEach((comment: unknown) => {
         if (comment && typeof comment === "object") {
+          const c = comment as Record<string, unknown>;
           allComments.push({
-            category: comment.category ?? "suggestion",
-            severity: comment.severity ?? "low",
-            message: comment.message ?? "",
-            file: comment.file,
-            line: comment.line,
+            category: (c.category as string) ?? "suggestion",
+            severity: (c.severity as string) ?? "low",
+            message: (c.message as string) ?? "",
+            file: c.file as string | undefined,
+            line: c.line as number | undefined,
           });
         }
       });
