@@ -303,7 +303,7 @@ export default function AnalyticsPage() {
   }
 
   return (
-    <div className="p-8 space-y-8 relative overflow-hidden bg-black text-white min-h-screen">
+    <div className="space-y-8 relative overflow-hidden">
       {/* ── Immersive Ambient Lighting (Neo-Glitch Glassmorphism) ── */}
       <div className="absolute top-[-20%] left-[-20%] w-[700px] h-[700px] rounded-full bg-indigo-500/10 blur-[130px] pointer-events-none" />
       <div className="absolute top-[30%] right-[-10%] w-[600px] h-[600px] rounded-full bg-purple-500/5 blur-[120px] pointer-events-none" />
